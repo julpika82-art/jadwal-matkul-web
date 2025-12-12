@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Jadwal Mata Kuliah & Daftar Dosen</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        input, select {
+            padding: 8px;
+            margin: 5px 0;
+            width: 90%;
+            max-width: 250px;
+        }
+
+        button {
+            padding: 8px 12px;
+            margin-top: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        table, th, td {
+            border: 1px solid #444;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        /* Responsif untuk HP */
+        @media (max-width: 600px) {
+            input, select {
+                width: 100%;
+            }
+
+            table {
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 7px;
+            }
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Aplikasi Jadwal Kuliah & Daftar Dosen</h2>
+
+    <!-- ========================================= -->
+    <!-- BAGIAN TABEL DOSEN -->
+    <!-- ========================================= -->
+    <div class="section">
+        <h3>Daftar Dosen</h3>
+
+        <label>Nama Dosen:</label>
+        <input type="text" id="namaDosen" placeholder="Masukkan nama dosen">
+
+        <label>Mata Kuliah Diampu:</label>
+        <input type="text" id="matkulDosen" placeholder="Nama mata kuliah">
+
+        <button onclick="tambahDosen()">Tambah Dosen</button>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nama Dosen</th>
+                    <th>Mata Kuliah</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="dataDosen"></tbody>
+        </table>
+    </div>
+
+    <!-- ========================================= -->
+    <!-- BAGIAN JADWAL KULIAH -->
+    <!-- ========================================= -->
+    <div class="section">
+        <h3>Jadwal Mata Kuliah</h3>
+
+        <label>Hari:</label>
+        <select id="hari">
+            <option>Senin</option>
+            <option>Selasa</option>
+            <option>Rabu</option>
+            <option>Kamis</option>
+            <option>Jumat</option>
+            <option>Sabtu</option>
+        </select>
+
+        <label>Mata Kuliah:</label>
+        <input type="text" id="matkul" placeholder="Nama Mata Kuliah">
+
+        <label>Jam:</label>
+        <input type="text" id="jam" placeholder="08:00 - 10:00">
+
+        <button onclick="tambahJadwal()">Tambah Jadwal</button>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Hari</th>
+                    <th>Mata Kuliah</th>
+                    <th>Jam</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="dataJadwal"></tbody>
+        </table>
+    </div>
+
+    <script>
+        // ==============================
+        // FUNGSI UNTUK TABEL DOSEN
+        // ==============================
+        function tambahDosen() {
+            let nama = document.getElementById("namaDosen").value;
+            let matkul = document.getElementById("matkulDosen").value;
+
+            if (nama.trim() === "" || matkul.trim() === "") {
+                alert("Isi semua data dosen!");
+                return;
+            }
+
+            let tabel = document.getElementById("dataDosen");
+            let row = tabel.insertRow();
+
+            row.insertCell(0).innerHTML = nama;
+            row.insertCell(1).innerHTML = matkul;
+            row.insertCell(2).innerHTML = `<button onclick="hapus(this)">Hapus</button>`;
+        }
+
+        // ==============================
+        // FUNGSI UNTUK TABEL JADWAL
+        // ==============================
+        function tambahJadwal() {
+            let hari = document.getElementById("hari").value;
+            let matkul = document.getElementById("matkul").value;
+            let jam = document.getElementById("jam").value;
+
+            if (matkul.trim() === "" || jam.trim() === "") {
+                alert("Isi semua data jadwal!");
+                return;
+            }
+
+            let tabel = document.getElementById("dataJadwal");
+            let row = tabel.insertRow();
+
+            row.insertCell(0).innerHTML = hari;
+            row.insertCell(1).innerHTML = matkul;
+            row.insertCell(2).innerHTML = jam;
+            row.insertCell(3).innerHTML = `<button onclick="hapus(this)">Hapus</button>`;
+        }
+
+        // ==============================
+        // FUNGSI HAPUS
+        // ==============================
+        function hapus(btn) {
+            let row = btn.parentNode.parentNode;
+            row.remove();
+        }
+    </script>
+
+</body>
+</html>
