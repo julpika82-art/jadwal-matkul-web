@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Aplikasi Jadwal Mata Kuliah</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        input, select {
+            padding: 5px;
+            margin: 5px;
+            width: 200px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        button {
+            padding: 8px 15px;
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Aplikasi Jadwal Mata Kuliah (CRUD Web)</h2>
+
+    <div>
+        <label>Hari:</label>
+        <select id="hari">
+            <option value="">- Pilih Hari -</option>
+            <option>Senin</option>
+            <option>Selasa</option>
+            <option>Rabu</option>
+            <option>Kamis</option>
+            <option>Jumat</option>
+            <option>Sabtu</option>
+        </select>
+        <br>
+
+        <label>Mata Kuliah:</label>
+        <input type="text" id="matkul">
+        <br>
+
+        <label>Jam:</label>
+        <input type="text" id="jam">
+        <br>
+
+        <label>Ruang:</label>
+        <input type="text" id="ruang">
+        <br>
+
+        <button onclick="tambahJadwal()">Tambah</button>
+        <button onclick="updateJadwal()">Update</button>
+        <button onclick="hapusJadwal()">Hapus</button>
+    </div>
+
+    <table id="tabel">
+        <thead>
+            <tr>
+                <th>Hari</th>
+                <th>Mata Kuliah</th>
+                <th>Jam</th>
+                <th>Ruang</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+<script>
+
+let jadwal = [];
+let selectedIndex = -1;
+
+// TAMPILKAN DATA KE TABEL
+function tampilkan() {
+    const tbody = document.querySelector("#tabel tbody");
+    tbody.innerHTML = "";
+
+    jadwal.forEach((item, index) => {
+        let row = `<tr onclick="pilih(${index})">
+                       <td>${item.hari}</td>
+                       <td>${item.matkul}</td>
+                       <td>${item.jam}</td>
+                       <td>${item.ruang}</td>
+                   </tr>`;
+        tbody.innerHTML += row;
+    });
+}
+
+// TAMBAH DATA
+function tambahJadwal() {
+    let hari = document.getElementById("hari").value;
+    let matkul = document.getElementById("matkul").value;
+    let jam = document.getElementById("jam").value;
+    let ruang = document.getElementById("ruang").value;
+
+    if (!hari || !matkul || !jam || !ruang) {
+        alert("Semua data harus diisi!");
+        return;
+    }
+
+    jadwal.push({ hari, matkul, jam, ruang });
+    tampilkan();
+    clearForm();
+    alert("Jadwal berhasil ditambahkan.");
+}
+
+// PILIH DATA (SEPERTI Treeview Tkinter)
+function pilih(index) {
+    selectedIndex = index;
+
+    const data = jadwal[index];
+
+    document.getElementById("hari").value = data.hari;
+    document.getElementById("matkul").value = data.matkul;
+    document.getElementById("jam").value = data.jam;
+    document.getElementById("ruang").value = data.ruang;
+}
+
+// UPDATE DATA
+function updateJadwal() {
+    if (selectedIndex === -1) {
+        alert("Pilih jadwal terlebih dahulu!");
+        return;
+    }
+
+    let hari = document.getElementById("hari").value;
+    let matkul = document.getElementById("matkul").value;
+    let jam = document.getElementById("jam").value;
+    let ruang = document.getElementById("ruang").value;
+
+    if (!hari || !matkul || !jam || !ruang) {
+        alert("Semua data wajib diisi!");
+        return;
+    }
+
+    jadwal[selectedIndex] = { hari, matkul, jam, ruang };
+
+    tampilkan();
+    clearForm();
+
+    alert("Jadwal berhasil diupdate.");
+}
+
+// HAPUS DATA
+function hapusJadwal() {
+    if (selectedIndex === -1) {
+        alert("Pilih jadwal terlebih dahulu!");
+        return;
+    }
+
+    jadwal.splice(selectedIndex, 1);
+    tampilkan();
+    clearForm();
+
+    alert("Jadwal berhasil dihapus.");
+}
+
+// BERSIHKAN FORM
+function clearForm() {
+    document.getElementById("hari").value = "";
+    document.getElementById("matkul").value = "";
+    document.getElementById("jam").value = "";
+    document.getElementById("ruang").value = "";
+    selectedIndex = -1;
+}
+
+</script>
+
+</body>
+</html>
